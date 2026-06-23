@@ -71,41 +71,40 @@ public class MessageRequestMachineList implements IMessage {
         @Override
         public IMessage onMessage(MessageRequestMachineList message, MessageContext ctx) {
             EntityPlayerMP player = ctx.getServerHandler().player;
-
-            List<Integer> favorites = new ArrayList<>();
-            if (message.hasBlockPos) {
-                World world = FMLCommonHandler.instance().getMinecraftServerInstance()
-                        .getWorld(message.blockDim);
-                if (world != null) {
-                    TileEntity te = world.getTileEntity(new BlockPos(message.blockX, message.blockY, message.blockZ));
-                    if (te instanceof TileEntityMachineBrowser) {
-                        favorites = ((TileEntityMachineBrowser) te).getFavorites();
+            player.getServerWorld().addScheduledTask(() -> {
+                List<Integer> favorites = new ArrayList<>();
+                if (message.hasBlockPos) {
+                    World world = FMLCommonHandler.instance().getMinecraftServerInstance()
+                            .getWorld(message.blockDim);
+                    if (world != null) {
+                        TileEntity te = world.getTileEntity(new BlockPos(message.blockX, message.blockY, message.blockZ));
+                        if (te instanceof TileEntityMachineBrowser) {
+                            favorites = ((TileEntityMachineBrowser) te).getFavorites();
+                        }
                     }
                 }
-            }
 
-            // Build machine list for this player
-            WorldSavedDataMachines wsd = WorldSavedDataMachines.getInstance();
-            List<MessageMachineList.MachineEntry> entries = new ArrayList<>();
+                WorldSavedDataMachines wsd = WorldSavedDataMachines.getInstance();
+                List<MessageMachineList.MachineEntry> entries = new ArrayList<>();
 
-            for (Integer id : wsd.machinePositions.keySet()) {
-                TileEntityMachine machine = wsd.getMachine(id);
-                if (machine == null) continue;
+                for (Integer id : wsd.machinePositions.keySet()) {
+                    TileEntityMachine machine = wsd.getMachine(id);
+                    if (machine == null) continue;
 
-                UUID owner = machine.getOwner();
-                if (owner == null || !owner.equals(message.playerUUID)) continue;
+                    UUID owner = machine.getOwner();
+                    if (owner == null || !owner.equals(message.playerUUID)) continue;
 
-                String name = machine.getCustomName();
-                int sizeMeta = wsd.machineSizes.containsKey(id)
-                        ? wsd.machineSizes.get(id).getMeta() : 0;
-                boolean isFav = favorites.contains(id);
+                    String name = machine.getCustomName();
+                    int sizeMeta = wsd.machineSizes.containsKey(id)
+                            ? wsd.machineSizes.get(id).getMeta() : 0;
+                    boolean isFav = favorites.contains(id);
 
-                entries.add(new MessageMachineList.MachineEntry(id, name, sizeMeta, isFav));
-            }
+                    entries.add(new MessageMachineList.MachineEntry(id, name, sizeMeta, isFav));
+                }
 
-            entries.sort((a, b) -> Integer.compare(a.id, b.id));
-
-            PackageHandler.instance.sendTo(new MessageMachineList(entries), player);
+                entries.sort((a, b) -> Integer.compare(a.id, b.id));
+                PackageHandler.instance.sendTo(new MessageMachineList(entries), player);
+            });
             return null;
         }
     }
