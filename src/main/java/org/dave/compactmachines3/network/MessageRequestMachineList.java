@@ -6,13 +6,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import org.dave.compactmachines3.tile.TileEntityMachine;
 import org.dave.compactmachines3.tile.TileEntityMachineBrowser;
-import org.dave.compactmachines3.utility.DimensionBlockPos;
 import org.dave.compactmachines3.world.WorldSavedDataMachines;
 
 import java.util.ArrayList;
@@ -74,7 +72,6 @@ public class MessageRequestMachineList implements IMessage {
         public IMessage onMessage(MessageRequestMachineList message, MessageContext ctx) {
             EntityPlayerMP player = ctx.getServerHandler().player;
 
-            // Collect favorites from TE if block pos was provided
             List<Integer> favorites = new ArrayList<>();
             if (message.hasBlockPos) {
                 World world = FMLCommonHandler.instance().getMinecraftServerInstance()
@@ -92,17 +89,9 @@ public class MessageRequestMachineList implements IMessage {
             List<MessageMachineList.MachineEntry> entries = new ArrayList<>();
 
             for (Integer id : wsd.machinePositions.keySet()) {
-                DimensionBlockPos dimPos = wsd.getMachineBlockPosition(id);
-                if (dimPos == null) continue;
+                TileEntityMachine machine = wsd.getMachine(id);
+                if (machine == null) continue;
 
-                World machineWorld = FMLCommonHandler.instance().getMinecraftServerInstance()
-                        .getWorld(dimPos.getDimension());
-                if (machineWorld == null) continue;
-
-                TileEntity te = machineWorld.getTileEntity(dimPos.getBlockPos());
-                if (!(te instanceof TileEntityMachine)) continue;
-
-                TileEntityMachine machine = (TileEntityMachine) te;
                 UUID owner = machine.getOwner();
                 if (owner == null || !owner.equals(message.playerUUID)) continue;
 
