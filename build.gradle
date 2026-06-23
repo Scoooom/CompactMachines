@@ -46,12 +46,12 @@ repositories {
 dependencies {
     deobfCompile "mezz.jei:jei_${minecraft.version}:${jei_version}:api"
 
-    deobfCompile fileTree(dir: 'lib', include: 'Hwyla-*.jar')
-    deobfCompile fileTree(dir: 'lib', include: 'theoneprobe-*.jar')
-    deobfCompile fileTree(dir: 'lib', include: 'refinedstorage-*-api.jar')
+    compile fileTree(dir: 'lib', include: 'Hwyla-*.jar')
+    compile fileTree(dir: 'lib', include: 'theoneprobe-*.jar')
+    compile fileTree(dir: 'lib', include: 'refinedstorage-*-api.jar')
     deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
-    deobfCompile fileTree(dir: 'lib', include: 'ThermalDynamics-*.jar')
-    deobfCompile fileTree(dir: 'lib', include: 'CoFHCore-*.jar')
+    compile fileTree(dir: 'lib', include: 'ThermalDynamics-*.jar')
+    compile fileTree(dir: 'lib', include: 'CoFHCore-*.jar')
 
     runtime fileTree(dir: 'lib', include: 'ThermalFoundation-*.jar')
     runtime fileTree(dir: 'lib', include: 'ThermalExpansion-*.jar')

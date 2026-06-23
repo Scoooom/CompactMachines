@@ -1,5 +1,6 @@
 package org.dave.compactmachines3.init;
 
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,9 +19,11 @@ public class Itemss {
     @GameRegistry.ObjectHolder("compactmachines3:redstonetunneltool")
     public static ItemRedstoneTunnelTool redstoneTunnelTool;
 
+    // The block item — registered as a plain ItemBlock
     @GameRegistry.ObjectHolder("compactmachines3:machinebrowser")
-    public static ItemMachineBrowser machineBrowser;
+    public static ItemBlock machineBrowser;
 
+    // The portable handheld item
     @GameRegistry.ObjectHolder("compactmachines3:machinebrowser_portable")
     public static ItemMachineBrowser machineBrowserPortable;
 
@@ -29,7 +32,6 @@ public class Itemss {
         psd.initModel();
         tunnelTool.initModel();
         redstoneTunnelTool.initModel();
-        machineBrowser.initModel();
         machineBrowserPortable.initModel();
     }
 }
