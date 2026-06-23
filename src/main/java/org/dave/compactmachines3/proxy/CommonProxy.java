@@ -53,6 +53,9 @@ public class CommonProxy {
 
         event.getRegistry().register(new BlockRedstoneTunnel(Material.IRON).setTranslationKey("redstonetunnel").setRegistryName(CompactMachines3.MODID, "redstonetunnel"));
         GameRegistry.registerTileEntity(TileEntityRedstoneTunnel.class, "TileEntityRedstoneTunnel");
+
+        event.getRegistry().register(new BlockMachineBrowser(Material.IRON).setTranslationKey("machinebrowser").setRegistryName(CompactMachines3.MODID, "machinebrowser"));
+        GameRegistry.registerTileEntity(TileEntityMachineBrowser.class, "TileEntityMachineBrowser");
     }
 
     @SubscribeEvent
@@ -67,6 +70,8 @@ public class CommonProxy {
         event.getRegistry().register(new ItemPersonalShrinkingDevice().setTranslationKey("psd").setRegistryName(CompactMachines3.MODID, "psd"));
         event.getRegistry().register(new ItemTunnelTool().setTranslationKey("tunneltool").setRegistryName(CompactMachines3.MODID, "tunneltool"));
         event.getRegistry().register(new ItemRedstoneTunnelTool().setTranslationKey("redstonetunneltool").setRegistryName(CompactMachines3.MODID, "redstonetunneltool"));
+        event.getRegistry().register(new ItemBlock(Blockss.machineBrowser).setRegistryName(Blockss.machineBrowser.getRegistryName()));
+        event.getRegistry().register(new ItemMachineBrowser().setTranslationKey("machinebrowser_portable").setRegistryName(CompactMachines3.MODID, "machinebrowser_portable"));
     }
 
     void registerTriggers() {

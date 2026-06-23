@@ -20,6 +20,9 @@ public class PackageHandler {
         instance.registerMessage(MessageSetMachineNameHandler.class, MessageSetMachineName.class, 8, Side.SERVER);
         instance.registerMessage(MessageMachinePositions.class, MessageMachinePositions.class, 9, Side.CLIENT);
         instance.registerMessage(MessageDocumentation.class, MessageDocumentation.class, 10, Side.CLIENT);
+        instance.registerMessage(MessageRequestMachineList.Handler.class, MessageRequestMachineList.class, 11, Side.SERVER);
+        instance.registerMessage(MessageMachineList.Handler.class, MessageMachineList.class, 12, Side.CLIENT);
+        instance.registerMessage(MessageToggleFavorite.Handler.class, MessageToggleFavorite.class, 13, Side.SERVER);
     }
 }
 

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "mm",
+    "mm"
+  ],
+  "key": {
+    "m": {
+      "item": "compactmachines3:machine",
+      "data": 7
+    }
+  },
+  "result": {
+    "item": "compactmachines3:machine",
+    "data": 8
+  }
+}

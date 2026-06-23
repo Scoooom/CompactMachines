@@ -7,6 +7,11 @@ tile.compactmachines3.machine.normal.name=Normal Compact Machine
 tile.compactmachines3.machine.large.name=Large Compact Machine
 tile.compactmachines3.machine.giant.name=Giant Compact Machine
 tile.compactmachines3.machine.maximum.name=Maximum Compact Machine
+tile.compactmachines3.machine.colossal.name=Colossal Compact Machine
+tile.compactmachines3.machine.massive.name=Massive Compact Machine
+tile.compactmachines3.machine.enormous.name=Enormous Compact Machine
+
+tile.compactmachines3.machinebrowser.name=Compact Machine Browser
 
 tile.compactmachines3.tunnel.name=Tunnel
 tile.compactmachines3.redstonetunnel.name=Redstone Tunnel
@@ -17,6 +22,7 @@ tile.compactmachines3.fieldprojector.name=Miniaturization Field Projector
 item.compactmachines3.psd.name=Personal Shrinking Device
 item.compactmachines3.tunneltool.name=Tunnel
 item.compactmachines3.redstonetunneltool.name=Redstone Tunnel
+item.compactmachines3.machinebrowser_portable.name=Portable Machine Browser
 
 item.compactmachines3.psd.spawnpoint_set=Entry point set!
 
@@ -210,6 +216,11 @@ gui.compactmachines3.compactsky.whitelist=Whitelist
 gui.compactmachines3.compactsky.preview=Preview
 gui.compactmachines3.compactsky.enter=Enter machine
 gui.compactmachines3.compactsky.rename=Rename
+
+gui.compactmachines3.browser.none=No Machines
+gui.compactmachines3.browser.favorites=Favorites
+gui.compactmachines3.browser.toggle_favorite=Toggle Favorite
+gui.compactmachines3.browser.enter_disabled=Must be inside the Compact Machines dimension to enter
 
 gui.compactmachines3.compactsky.configuration.startLocked=Start machines in locked state
 gui.compactmachines3.compactsky.configuration.givePSD=Give players a Shrinking Device on first spawn

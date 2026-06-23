@@ -27,6 +27,9 @@ public class Blockss {
     @GameRegistry.ObjectHolder("compactmachines3:redstonetunnel")
     public static BlockRedstoneTunnel redstoneTunnel;
 
+    @GameRegistry.ObjectHolder("compactmachines3:machinebrowser")
+    public static BlockMachineBrowser machineBrowser;
+
     @SideOnly(Side.CLIENT)
     public static void initModels() {
         tunnel.initModel();
@@ -36,6 +39,7 @@ public class Blockss {
         fieldProjector.initModel();
         craftingHologram.initModel();
         redstoneTunnel.initModel();
+        machineBrowser.initModel();
     }
 
 }

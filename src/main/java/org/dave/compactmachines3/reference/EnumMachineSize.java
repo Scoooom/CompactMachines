@@ -3,12 +3,15 @@ package org.dave.compactmachines3.reference;
 import net.minecraft.util.IStringSerializable;
 
 public enum EnumMachineSize implements IStringSerializable {
-    TINY    (0, "tiny", 4),
-    SMALL   (1, "small", 6),
-    NORMAL  (2, "normal", 8),
-    LARGE   (3, "large", 10),
-    GIANT   (4, "giant", 12),
-    MAXIMUM (5, "maximum", 14);
+    TINY     (0, "tiny",     4),
+    SMALL    (1, "small",    6),
+    NORMAL   (2, "normal",   8),
+    LARGE    (3, "large",    10),
+    GIANT    (4, "giant",    12),
+    MAXIMUM  (5, "maximum",  14),
+    COLOSSAL (6, "colossal", 24),
+    MASSIVE  (7, "massive",  48),
+    ENORMOUS (8, "enormous", 64);
 
     private int meta;
     private String name;
@@ -41,6 +44,9 @@ public enum EnumMachineSize implements IStringSerializable {
             case 3: return LARGE;
             case 4: return GIANT;
             case 5: return MAXIMUM;
+            case 6: return COLOSSAL;
+            case 7: return MASSIVE;
+            case 8: return ENORMOUS;
         }
 
         return TINY;

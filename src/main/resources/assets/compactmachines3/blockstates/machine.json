@@ -7,12 +7,15 @@
   },
   "variants": {
     "size": {
-      "tiny":    { "textures": { "all": "compactmachines3:blocks/machine_0" }},
-      "small":   { "textures": { "all": "compactmachines3:blocks/machine_1" }},
-      "normal":  { "textures": { "all": "compactmachines3:blocks/machine_2" }},
-      "large":   { "textures": { "all": "compactmachines3:blocks/machine_3" }},
-      "giant":   { "textures": { "all": "compactmachines3:blocks/machine_4" }},
-      "maximum": { "textures": { "all": "compactmachines3:blocks/machine_5" }}
+      "tiny":     { "textures": { "all": "compactmachines3:blocks/machine_0" }},
+      "small":    { "textures": { "all": "compactmachines3:blocks/machine_1" }},
+      "normal":   { "textures": { "all": "compactmachines3:blocks/machine_2" }},
+      "large":    { "textures": { "all": "compactmachines3:blocks/machine_3" }},
+      "giant":    { "textures": { "all": "compactmachines3:blocks/machine_4" }},
+      "maximum":  { "textures": { "all": "compactmachines3:blocks/machine_5" }},
+      "colossal": { "textures": { "all": "compactmachines3:blocks/machine_6" }},
+      "massive":  { "textures": { "all": "compactmachines3:blocks/machine_7" }},
+      "enormous": { "textures": { "all": "compactmachines3:blocks/machine_8" }}
     }
   }
 }
