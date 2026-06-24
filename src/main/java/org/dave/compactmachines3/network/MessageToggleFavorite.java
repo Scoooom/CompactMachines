@@ -11,8 +11,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import org.dave.compactmachines3.item.ItemMachineBrowser;
+import org.dave.compactmachines3.tile.TileEntityMachine;
 import org.dave.compactmachines3.tile.TileEntityMachineBrowser;
+import org.dave.compactmachines3.world.WorldSavedDataMachines;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -73,51 +77,60 @@ public class MessageToggleFavorite implements IMessage {
         @Override
         public IMessage onMessage(MessageToggleFavorite message, MessageContext ctx) {
             EntityPlayerMP player = ctx.getServerHandler().player;
+            player.getServerWorld().addScheduledTask(() -> {
+                List<Integer> favorites = new ArrayList<>();
 
-            if (message.hasBlockPos) {
-                // Block browser — update TE favorites
-                World world = FMLCommonHandler.instance().getMinecraftServerInstance()
-                        .getWorld(message.blockDim);
-                if (world != null) {
-                    TileEntity te = world.getTileEntity(
-                            new BlockPos(message.blockX, message.blockY, message.blockZ));
-                    if (te instanceof TileEntityMachineBrowser) {
-                        TileEntityMachineBrowser browser = (TileEntityMachineBrowser) te;
-                        if (browser.isFavorite(message.machineId)) {
-                            browser.removeFavorite(message.machineId);
-                        } else {
-                            browser.addFavorite(message.machineId);
+                if (message.hasBlockPos) {
+                    World world = FMLCommonHandler.instance().getMinecraftServerInstance()
+                            .getWorld(message.blockDim);
+                    if (world != null) {
+                        TileEntity te = world.getTileEntity(
+                                new BlockPos(message.blockX, message.blockY, message.blockZ));
+                        if (te instanceof TileEntityMachineBrowser) {
+                            TileEntityMachineBrowser browser = (TileEntityMachineBrowser) te;
+                            if (browser.isFavorite(message.machineId)) {
+                                browser.removeFavorite(message.machineId);
+                            } else {
+                                browser.addFavorite(message.machineId);
+                            }
+                            favorites = browser.getFavorites();
                         }
-                        // Re-send full list with updated favorites
-                        UUID uuid = player.getUniqueID();
-                        PackageHandler.instance.sendTo(
-                                new MessageRequestMachineList(uuid,
-                                        new BlockPos(message.blockX, message.blockY, message.blockZ),
-                                        message.blockDim),
-                                player);
-                        // Re-trigger the list build by invoking the handler directly
-                        new MessageRequestMachineList.Handler().onMessage(
-                                new MessageRequestMachineList(uuid,
-                                        new BlockPos(message.blockX, message.blockY, message.blockZ),
-                                        message.blockDim),
-                                ctx);
+                    }
+                } else {
+                    ItemStack held = player.getHeldItemMainhand();
+                    if (held.getItem() instanceof ItemMachineBrowser) {
+                        if (ItemMachineBrowser.isFavorite(held, message.machineId)) {
+                            ItemMachineBrowser.removeFavorite(held, message.machineId);
+                        } else {
+                            ItemMachineBrowser.addFavorite(held, message.machineId);
+                        }
+                        favorites = ItemMachineBrowser.getFavorites(held);
                     }
                 }
-            } else {
-                // Portable item — update held item NBT
-                ItemStack held = player.getHeldItemMainhand();
-                if (held.getItem() instanceof ItemMachineBrowser) {
-                    if (ItemMachineBrowser.isFavorite(held, message.machineId)) {
-                        ItemMachineBrowser.removeFavorite(held, message.machineId);
-                    } else {
-                        ItemMachineBrowser.addFavorite(held, message.machineId);
-                    }
-                    // Re-send list
-                    new MessageRequestMachineList.Handler().onMessage(
-                            new MessageRequestMachineList(player.getUniqueID()), ctx);
-                }
-            }
 
+                // Build and send updated list with correct favorite state
+                WorldSavedDataMachines wsd = WorldSavedDataMachines.getInstance();
+                List<MessageMachineList.MachineEntry> entries = new ArrayList<>();
+                final List<Integer> finalFavorites = favorites;
+
+                for (Integer id : wsd.machinePositions.keySet()) {
+                    TileEntityMachine machine = wsd.getMachine(id);
+                    if (machine == null) continue;
+
+                    UUID owner = machine.getOwner();
+                    if (owner == null || !owner.equals(player.getUniqueID())) continue;
+
+                    String name = machine.getCustomName();
+                    int sizeMeta = wsd.machineSizes.containsKey(id)
+                            ? wsd.machineSizes.get(id).getMeta() : 0;
+                    boolean isFav = finalFavorites.contains(id);
+
+                    entries.add(new MessageMachineList.MachineEntry(id, name, sizeMeta, isFav));
+                }
+
+                entries.sort((a, b) -> Integer.compare(a.id, b.id));
+                PackageHandler.instance.sendTo(new MessageMachineList(entries), player);
+            });
             return null;
         }
     }

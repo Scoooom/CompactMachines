@@ -86,6 +86,12 @@ public class MessageRequestMachineList implements IMessage {
                             favorites = ((TileEntityMachineBrowser) te).getFavorites();
                         }
                     }
+                } else {
+                    // Portable item — read favorites from held item NBT server-side
+                    net.minecraft.item.ItemStack held = player.getHeldItemMainhand();
+                    if (held.getItem() instanceof org.dave.compactmachines3.item.ItemMachineBrowser) {
+                        favorites = org.dave.compactmachines3.item.ItemMachineBrowser.getFavorites(held);
+                    }
                 }
 
                 WorldSavedDataMachines wsd = WorldSavedDataMachines.getInstance();
