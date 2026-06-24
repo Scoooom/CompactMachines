@@ -22,7 +22,7 @@ tile.compactmachines3.fieldprojector.name=Miniaturization Field Projector
 item.compactmachines3.psd.name=Personal Shrinking Device
 item.compactmachines3.tunneltool.name=Tunnel
 item.compactmachines3.redstonetunneltool.name=Redstone Tunnel
-item.compactmachines3.machinebrowser_portable.name=Portable Machine Browser
+item.machinebrowser_portable.name=Portable Machine Browser
 
 item.compactmachines3.psd.spawnpoint_set=Entry point set!
 

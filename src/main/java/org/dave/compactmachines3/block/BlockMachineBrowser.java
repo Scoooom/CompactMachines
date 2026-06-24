@@ -45,13 +45,12 @@ public class BlockMachineBrowser extends BlockBase implements ITileEntityProvide
             EntityPlayer player, EnumHand hand, EnumFacing side,
             float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
+            PackageHandler.instance.sendToServer(new MessageRequestMachineList(player.getUniqueID(), pos, world.provider.getDimension()));
             return true;
         }
 
         player.openGui(CompactMachines3.instance, GuiIds.MACHINE_BROWSER.ordinal(),
                 world, pos.getX(), pos.getY(), pos.getZ());
-        PackageHandler.instance.sendTo(new MessageRequestMachineList(player.getUniqueID()),
-                (net.minecraft.entity.player.EntityPlayerMP) player);
 
         return true;
     }

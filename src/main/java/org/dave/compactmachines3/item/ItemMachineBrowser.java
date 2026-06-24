@@ -40,8 +40,8 @@ public class ItemMachineBrowser extends Item {
         if (!world.isRemote) {
             player.openGui(CompactMachines3.instance, GuiIds.MACHINE_BROWSER.ordinal(),
                     world, (int) player.posX, (int) player.posY, (int) player.posZ);
-            PackageHandler.instance.sendTo(new MessageRequestMachineList(player.getUniqueID()),
-                    (EntityPlayerMP) player);
+        } else {
+            PackageHandler.instance.sendToServer(new MessageRequestMachineList(player.getUniqueID()));
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }

@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import org.dave.compactmachines3.CompactMachines3;
 import org.dave.compactmachines3.tile.TileEntityMachine;
 import org.dave.compactmachines3.tile.TileEntityMachineBrowser;
 import org.dave.compactmachines3.world.WorldSavedDataMachines;
@@ -71,7 +72,10 @@ public class MessageRequestMachineList implements IMessage {
         @Override
         public IMessage onMessage(MessageRequestMachineList message, MessageContext ctx) {
             EntityPlayerMP player = ctx.getServerHandler().player;
+            CompactMachines3.logger.info("[Browser] Request received from {} on thread {}", player.getName(), Thread.currentThread().getName());
             player.getServerWorld().addScheduledTask(() -> {
+                CompactMachines3.logger.info("[Browser] Running on server thread");
+
                 List<Integer> favorites = new ArrayList<>();
                 if (message.hasBlockPos) {
                     World world = FMLCommonHandler.instance().getMinecraftServerInstance()
@@ -85,13 +89,17 @@ public class MessageRequestMachineList implements IMessage {
                 }
 
                 WorldSavedDataMachines wsd = WorldSavedDataMachines.getInstance();
+                CompactMachines3.logger.info("[Browser] machinePositions count: {}", wsd.machinePositions.size());
+
                 List<MessageMachineList.MachineEntry> entries = new ArrayList<>();
 
                 for (Integer id : wsd.machinePositions.keySet()) {
                     TileEntityMachine machine = wsd.getMachine(id);
+                    CompactMachines3.logger.info("[Browser] id={} machine={}", id, machine);
                     if (machine == null) continue;
 
                     UUID owner = machine.getOwner();
+                    CompactMachines3.logger.info("[Browser] id={} owner={} playerUUID={}", id, owner, message.playerUUID);
                     if (owner == null || !owner.equals(message.playerUUID)) continue;
 
                     String name = machine.getCustomName();
@@ -103,6 +111,7 @@ public class MessageRequestMachineList implements IMessage {
                 }
 
                 entries.sort((a, b) -> Integer.compare(a.id, b.id));
+                CompactMachines3.logger.info("[Browser] Sending {} entries to {}", entries.size(), player.getName());
                 PackageHandler.instance.sendTo(new MessageMachineList(entries), player);
             });
             return null;
